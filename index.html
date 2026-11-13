@@ -18,7 +18,7 @@ h1{font-size:1.4rem;margin:0}.sub{color:var(--mut);font-size:.85rem}
 .btn.alt{background:transparent;color:var(--ink);border:1px solid var(--line)}
 .tabs{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
 .tab{padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-weight:700;font-size:.82rem;cursor:pointer}
-.tab.on{background:var(--acc);color:#fff;border-color:var(--acc)}.tab:disabled{opacity:.5;cursor:not-allowed}.tLA{border-bottom:3px solid #16a34a}.tMA{border-bottom:3px solid #d97706}.tHA{border-bottom:3px solid #dc2626}.tab small{font-weight:400;opacity:.8}
+.tab.on{background:var(--acc);color:#fff;border-color:var(--acc)}.tab:disabled{opacity:.5;cursor:not-allowed}.tLA{border-bottom:3px solid #16a34a}.tMA{border-bottom:3px solid #d97706}.tHA{border-bottom:3px solid #dc2626}.tab small{font-weight:400;opacity:.8}.tabs{flex-direction:column;gap:4px}.tier{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.tl{display:inline-block;min-width:96px;font-weight:700;font-size:.8rem;padding:4px 0;border-bottom:none!important}.tl.tLA{color:#16a34a}.tl.tMA{color:#d97706}.tl.tHA{color:#dc2626}
 .prog{height:12px;background:var(--line);border-radius:8px;overflow:hidden;margin:6px 0}
 .prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--acc),var(--ok));transition:width .45s}
 .lvl{margin:6px 0}.badge{display:inline-block;padding:1px 9px;border-radius:12px;background:var(--acc);color:#fff;font-weight:700;font-size:.78rem;margin-right:6px}
@@ -51,6 +51,11 @@ table{width:100%;border-collapse:collapse;font-size:.8rem;margin-top:6px}td,th{b
 td code{font:.78rem ui-monospace,Menlo,Consolas,monospace}
 @keyframes sh{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
 @keyframes pop{40%{transform:scale(1.1)}}
+.mc ul{text-align:left;margin:8px 0;padding-left:20px}.mc li{margin:3px 0}.lnk{background:none;border:0;color:var(--acc);font-weight:700;text-decoration:underline;cursor:pointer;font-size:.95rem}
+.avs{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:10px 0}.av{font-size:1.5rem;width:46px;height:46px;border-radius:50%;border:2px solid var(--line);background:var(--card);cursor:pointer}.av.on{border-color:var(--acc);background:var(--okb);transform:scale(1.12)}
+.fact{font-size:.85rem;color:var(--mut)}.we{color:var(--bad);min-height:1.2em;margin:4px 0}.mc input,.mc select,.mc textarea{padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:.95rem;margin:2px}
+.dash{text-align:left}.dash p{margin:6px 0}.tw{overflow-x:auto}.st{width:100%;border-collapse:collapse;font-size:.8rem;margin:8px 0;text-align:left}.st td,.st th{border-bottom:1px solid var(--line);padding:2px 6px}.st th{font-size:.72rem;color:var(--mut)}
+.cert{border:6px double var(--acc);padding:14px;border-radius:8px}.cn{font-size:1.7rem;font-weight:700;margin:4px 0}
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;align-items:center;justify-content:center;padding:16px}
 .mc{background:var(--card);border-radius:16px;padding:20px;max-width:520px;max-height:92vh;overflow:auto;text-align:center}
 .mc h2{margin:0 0 8px}.mc p{margin:6px 0}
@@ -61,8 +66,8 @@ td code{font:.78rem ui-monospace,Menlo,Consolas,monospace}
 @media print{:root:root:root:root{--bg:#fff;--card:#fff;--ink:#16202e;--mut:#5a6779;--line:#c7d0dc}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}html,body{background:#fff!important}.wrap,.cf{display:none!important}.modal{position:static!important;background:none!important;display:block!important}.mc{max-height:none!important}.np{display:none}}
 </style></head>
 <body><div class="wrap">
-<div class="top"><div><h1>Flowchart to Python</h1><div class="sub">IGCSE Computer Science 4CP0: turn the flowchart into a Python program</div></div>
-<div class="stats"><div class="stat"><b id="sc">0</b><span>Score</span></div><div class="stat"><b id="ms">0</b><span>Mistakes</span></div><button class="btn alt" id="rs">Reset level</button><button class="btn alt" onclick="summary()">Report</button></div></div>
+<div class="top"><div><h1>Flowchart to Python</h1><div class="sub">IGCSE Computer Science 4CP0: turn the flowchart into a Python program</div><div class="sub" id="who"></div></div>
+<div class="stats"><div class="stat"><b id="sc">0</b><span>Score</span></div><div class="stat"><b id="sk">0</b><span>Streak</span></div><div class="stat"><b id="ms">0</b><span>Mistakes</span></div><div class="stat"><b id="tm">0m 00s</b><span>Level time</span></div><button class="btn alt" id="rs">Reset level</button><button class="btn alt" onclick="summary()">Progress report</button><button class="btn alt" onclick="saveDlg()">Save progress</button><button class="btn alt" onclick="welcome()">Player</button><button class="btn alt" onclick="rules(false)">Rules</button></div></div>
 <div class="tabs" id="tabs"></div>
 <div class="prog"><i id="pb"></i></div>
 <div class="lvl"><span class="badge" id="bd"></span><b id="lt"></b>: <span id="goal"></span></div>
@@ -89,7 +94,7 @@ guess:{v:560,n:'T140,30 P140,100 IO140,170 D140,265 D395,265 IO395,360 IO395,440
 sel2:{v:480,n:'T140,30 IO140,100 IO140,170 D140,265 IO395,265 IO140,370 T140,440',e:'140,52 140,78;140,122 140,148;140,192 140,223;235,265 295,265@Yes,262,257;140,307 140,348@No,152,332;140,392 140,418;395,287 395,440 240,440'},
 sum:{v:490,n:'T140,30 P140,100 P140,170 D140,265 P395,265 P395,340 IO140,380 T140,450',e:'140,52 140,78;140,122 140,148;140,192 140,223;235,265 295,265@Yes,262,257;395,287 395,318;495,340 520,340 520,205 140,205;140,307 140,358@No,152,335;140,402 140,428'},
 nest:{v:560,n:'T140,30 IO140,100 IO140,170 D140,265 D395,265 IO395,365 IO140,365 IO395,440 T140,520',e:'140,52 140,78;140,122 140,148;140,192 140,223;235,265 300,265@Yes,262,257;140,307 140,343@No,152,330;395,307 395,343@Yes,402,330;490,265 520,265 520,440 495,440@No,500,257;395,387 395,410 260,410 260,520 240,520;395,462 395,520 260,520;140,387 140,498'}};
-const GO={LA:'LA: fill in the gaps to turn the flowchart into Python.',MA:'MA: some whole lines are missing. Complete the program.',HA:'HA: build the whole program. Watch out for extra lines and indentation.'};
+const TN={LA:'Beginner',MA:'Intermediate',HA:'Expert'},GO={LA:'Beginner: fill in the gaps to turn the flowchart into Python.',MA:'Intermediate: some whole lines are missing. Complete the program.',HA:'Expert: build the whole program. Watch out for extra lines and indentation.'};
 const IN='int(input("Enter a number: "))';
 function mk(o){const tp=TP[o.p],tx=o.f.split(';');
  return {...o,vh:tp.v,nodes:[...tp.n.matchAll(/([A-Z]+)(\d+),(\d+)/g)].map((m,i)=>({id:String.fromCharCode(97+i),t:m[1],x:+m[2],y:+m[3],s:tx[i]})),edges:tp.e.split(';').map(q=>{const [a,l]=q.split('@');return{p:a,l:l&&l.split(',')}})}}
@@ -122,24 +127,26 @@ const T=[
 ].map(mk);
 const $=s=>document.querySelector(s),esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const W=200,H=44,DW=190,DH=84;
-let ti=0,score=0,mist=0,streak=0,unlocked=0,done={},tries={},bank=[],SL=[],sel=null,locked=false,drag=null,startScore=0,att=T.map(()=>0),mm=T.map(()=>0),best=T.map(()=>null);
+let ti=0,score=0,mist=0,streak=0,unlocked=0,done={},tries={},bank=[],SL=[],sel=null,locked=false,drag=null,startScore=0,att=T.map(()=>0),mm=T.map(()=>0),best=T.map(()=>null),tim=T.map(()=>0),pon=T.map(()=>0),pname='',pyear='',pav='🤖',curLi=0,t0=Date.now();
 const SK='flowchartPythonV1';
 const KEY=k=>k.lv+':'+k.t;
-function save(){try{localStorage.setItem(SK,JSON.stringify({u:unlocked,s:score,a:att,m:mm,b:best,k:T.map(KEY)}))}catch(_){}}
+const data=()=>({u:unlocked,s:score,a:att,m:mm,b:best,t:tim,p:pon,k:T.map(KEY),n:pname,y:pyear,v:pav});
+function save(){try{localStorage.setItem(SK,JSON.stringify(data()))}catch(_){}}
 const OLD19=['LA:Greeting','LA:Area of a square','LA:Pass or fail','LA:Odd or even','LA:Grade with elif','LA:Times table: count from 1 to 5','MA:Teenager check','MA:Login with a nested if','MA:Running total: add numbers until 0','MA:Average of 5 marks','MA:Pass counter','MA:Largest of 5 numbers','HA:Grade with elif','HA:Login with a nested if','HA:Running total: add numbers until 0','HA:Average of 5 marks','HA:Pass counter','HA:Password checker: 3 attempts','HA:Even and odd counter'];
-function load(){try{const d=JSON.parse(localStorage.getItem(SK)||'null');if(!d||!d.a)return;
- const REN={'MA:Largest of 5 numbers':'MA:Highest of 5 marks'};const keys=(d.k||(d.a.length==OLD19.length?OLD19:[])).map(q=>REN[q]||q);if(!keys.length)return;if(!keys||keys.length!=d.a.length)return;
+function load(){try{apply(JSON.parse(localStorage.getItem(SK)||'null'))}catch(_){}}
+function apply(d){if(!d||!Array.isArray(d.a))return false;pname=String(d.n||'').slice(0,40);pyear=String(d.y||'').slice(0,12);pav=String(d.v||'🤖').slice(0,4);
+ const REN={'MA:Largest of 5 numbers':'MA:Highest of 5 marks'};const keys=(d.k||(d.a.length==OLD19.length?OLD19:[])).map(q=>REN[q]||q);if(!keys.length)return false;if(!keys||keys.length!=d.a.length)return false;
  const now=T.map(KEY);score=d.s|0;
- keys.forEach((key,i)=>{const j=now.indexOf(key);if(j<0)return;att[j]=d.a[i]|0;mm[j]=d.m[i]|0;best[j]=d.b[i]});
+ keys.forEach((key,i)=>{const j=now.indexOf(key);if(j<0)return;att[j]=d.a[i]|0;mm[j]=d.m[i]|0;best[j]=d.b[i]==null?null:+d.b[i]||0;tim[j]=d.t?+d.t[i]||0:0;pon[j]=d.p?d.p[i]|0:0});
  // every level before the first new or unpassed one stays unlocked
- const passed=new Set(keys.slice(0,d.u|0));let u=0;while(u<T.length&&passed.has(now[u]))u++;unlocked=u}catch(_){}}
+ const passed=new Set(keys.slice(0,d.u|0));let u=0;while(u<T.length&&passed.has(now[u]))u++;unlocked=u;return true}
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function shape(n){const d=n.t=='D',w=d?DW:W,h=d?DH:H,x=n.x,y=n.y;
  if(n.t=='T'||n.t=='P')return `<rect class="shp" x="${x-w/2}" y="${y-h/2}" width="${w}" height="${h}" rx="${n.t=='T'?22:3}"/>`;
  if(n.t=='IO')return `<polygon class="shp" points="${x-w/2+14},${y-h/2} ${x+w/2},${y-h/2} ${x+w/2-14},${y+h/2} ${x-w/2},${y+h/2}"/>`;
  return `<polygon class="shp" points="${x},${y-h/2} ${x+w/2},${y} ${x},${y+h/2} ${x-w/2},${y}"/>`}
 function lab(n){const l=n.s.split('|');return l.map((q,i)=>`<tspan x="${n.x}" y="${n.y+4+(i-(l.length-1)/2)*13}">${esc(q)}</tspan>`).join('')}
-function build(){const k=T[ti];done={};tries={};mist=0;streak=0;locked=false;sel=null;startScore=score;SL=[];let ri=0,c='';
+function build(){tick();curLi=ti;const k=T[ti];done={};tries={};mist=0;streak=0;locked=false;sel=null;startScore=score;SL=[];let ri=0,c='';
  let h=`<svg viewBox="0 0 550 ${k.vh}" role="img" aria-label="Flowchart"><defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z"/></marker></defs>`;
  k.edges.forEach(e=>{h+=`<polyline class="ed" points="${e.p}" marker-end="url(#ar)"/>`;if(e.l)h+=`<text class="el" x="${e.l[1]}" y="${e.l[2]}">${e.l[0]}</text>`});
  k.nodes.forEach(n=>{h+=`<g class="n ${n.t}" data-id="${n.id}">${shape(n)}<text class="tx">${lab(n)}</text></g>`});
@@ -149,12 +156,12 @@ function build(){const k=T[ti];done={};tries={};mist=0;streak=0;locked=false;sel
   c+=`<div class="ln"><span class="no">${i+1}</span>${full?g(ln):ln.split(/(\{[^}]*\})/).map(q=>q[0]=='{'?g(q.slice(1,-1)):esc(q)).join('')}</div>`});
  $('#code').innerHTML=c;
  bank=shuffle(SL.map(q=>q.a).concat(k.x).map((t,i)=>({id:'c'+i,t})));
- $('#lt').textContent=`Level ${ti+1}, ${k.t}`;$('#goal').textContent=GO[k.lv];$('#bd').textContent=k.lv;
+ $('#lt').textContent=`Level ${ti+1}, ${k.t}`;$('#goal').textContent=GO[k.lv];$('#bd').textContent=TN[k.lv];
  fb('','Drag a piece of code into a dashed gap (or tap a piece, then tap a gap). Hover a gap to see which flowchart shape it matches.');render()}
-function render(){const d=Object.keys(done).length;$('#sc').textContent=score;$('#ms').textContent=mist;$('#pb').style.width=d/SL.length*100+'%';
+function render(){const d=Object.keys(done).length;$('#sc').textContent=score;$('#sk').textContent=streak;$('#ms').textContent=mist;who();$('#pb').style.width=d/SL.length*100+'%';
  $('#bh').textContent=`Code bank (${bank.length} left)`;
  $('#chips').innerHTML=bank.map(c=>`<div class="chip${sel==c.id?' sel':''}" data-cid="${c.id}">${esc(c.t)}</div>`).join('');
- $('#tabs').innerHTML=T.map((k,i)=>`<button class="tab t${k.lv}${i==ti?' on':''}" ${i>unlocked?'disabled':''} onclick="go(${i})">${i>unlocked?'🔒':i<unlocked?'✓ ':''}${i+1} <small>${k.lv}</small></button>`).join('')}
+ $('#tabs').innerHTML=['LA','MA','HA'].map(t=>`<div class="tier"><span class="tl t${t}">${TN[t]}</span>${T.map((k,i)=>k.lv!=t?'':`<button class="tab t${k.lv}${i==ti?' on':''}" ${i>unlocked?'disabled':''} onclick="go(${i})">${i>unlocked?'🔒':i<unlocked?'✓ ':''}${i+1}</button>`).join('')}</div>`).join('')}
 function fb(k,h){const f=$('#fb');f.className='fb '+k;f.innerHTML=h}
 function hl(r){document.querySelectorAll('.hl').forEach(x=>x.classList.remove('hl'));if(r){const g=$(`#chart [data-id="${r}"]`);if(g)g.classList.add('hl')}}
 function why(ch,sl,k){const t=ch.t,a=sl.a;
@@ -166,27 +173,55 @@ function why(ch,sl,k){const t=ch.t,a=sl.a;
 function attempt(cid,sid){const ch=bank.find(c=>c.id==cid),sl=SL.find(q=>q.id==sid);if(!ch||!sl||done[sid]||locked)return;sel=null;
  const g=$(`[data-slot="${sid}"]`);hl(sl.r);
  if(ch.t===sl.a){done[sid]=1;streak++;const p=10+Math.min(streak-1,4)*2;score+=p;bank=bank.filter(c=>c!==ch);g.textContent=sl.a;g.classList.add('done','pop');
-  fb('ok',`${['Nice one!','Correct!','Spot on!','Great thinking!'][Math.floor(Math.random()*4)]} +${p} points${streak>1?` (streak bonus ×${streak})`:''}`)}
+  fb('ok',`${pav} ${['Nice one!','Correct!','Spot on!','Great thinking!'][Math.floor(Math.random()*4)]} +${p} points${streak>1?` (streak bonus ×${streak})`:''}`)}
  else{mist++;streak=0;score=Math.max(0,score-3);tries[sid]=(tries[sid]||0)+1;g.classList.remove('shake');void g.offsetWidth;g.classList.add('shake');
   const el=$(`.chip[data-cid="${cid}"]`);if(el)el.classList.add('shake');
   let m=why(ch,sl,T[ti]);if(tries[sid]>=2)m+=` Clue: the answer starts with “${esc(sl.a.trim().slice(0,7))}”.`;
   fb('bad',`Not quite, −3 points. ${m}`)}
  render();if(Object.keys(done).length==SL.length)finish()}
 const MAXM=5,stars=m=>m==0?3:m<=2?2:1;
-function finish(){locked=true;const ok=mist<=MAXM;att[ti]++;mm[ti]+=mist;
+function finish(){locked=true;tick();const ok=mist<=MAXM;att[ti]++;mm[ti]+=mist;if(ok&&!pon[ti])pon[ti]=att[ti];
  if(ok){if(mist==0)score+=20;const g=score-startScore,p=best[ti]||0;best[ti]=Math.max(p,g);score=startScore+(best[ti]-p);unlocked=Math.max(unlocked,ti+1);confetti()}else score=startScore;
  save();render();
- setTimeout(()=>modal(ok?`<h2>Level ${ti+1} complete!</h2><p style="font-size:2rem">${'⭐'.repeat(stars(mist))}</p><p>${mist==0?'Perfect run! +20 bonus.':`Passed with ${mist} mistake${mist>1?'s':''}. Aim for none to earn the +20 bonus.`}</p><button class="btn" onclick="next()">${ti<T.length-1?'Next level':'See summary'}</button>`:`<h2>So close!</h2><p>You made ${mist} mistakes. You can make up to ${MAXM} and still move on, so try again.</p><p>The code pieces are shuffled each time.</p><button class="btn" onclick="retry()">Try again</button>`),700)}
-function next(){closeM();if(ti<T.length-1){ti++;build()}else{confetti();summary()}}
-function summary(){modal(`<h2>Progress report</h2><p><b>${score}</b> points, ${Math.min(unlocked,T.length)} of ${T.length} levels passed</p><div style="overflow-x:auto"><table><tr><th>Level</th><th>Attempts</th><th>Mistakes</th><th>Best</th></tr>${T.map((k,i)=>`<tr><td>${i+1}. ${k.t} (${k.lv})</td><td>${att[i]}</td><td>${mm[i]}</td><td>${best[i]==null?'-':best[i]}</td></tr>`).join('')}</table></div><p class="np"><button class="btn" onclick="copyReport(this)">Copy report</button> <button class="btn alt" onclick="try{print()}catch(_){}">Print or save as PDF</button> <button class="btn alt" onclick="closeM()">Close</button> <button class="btn alt" onclick="restart()">Start again</button></p>`)}
-function copyReport(b){const t=['Flowchart to Python progress report',`Score: ${score}, ${Math.min(unlocked,T.length)} of ${T.length} levels passed`,'Level\tAttempts\tMistakes\tBest'].concat(T.map((k,i)=>`${i+1}. ${k.t} (${k.lv})\t${att[i]}\t${mm[i]}\t${best[i]==null?'-':best[i]}`)).join('\n');
+ setTimeout(()=>modal(ok?`<h2>Level ${ti+1} complete!</h2><p style="font-size:2rem">${'⭐'.repeat(stars(mist))}</p><p>${mist==0?'Perfect run! +20 bonus.':`Passed with ${mist} mistake${mist>1?'s':''}. Aim for none to earn the +20 bonus.`}</p><button class="btn" onclick="next()">${ti<T.length-1?'Next level':'Get your certificate'}</button>`:`<h2>So close!</h2><p>You made ${mist} mistakes. You can make up to ${MAXM} and still move on, so try again.</p><p>The code pieces are shuffled each time.</p><button class="btn" onclick="retry()">Try again</button>`),700)}
+function next(){closeM();if(ti<T.length-1){ti++;build()}else cert()}
+const fmt=ms=>{const s=Math.round((ms||0)/1000);return Math.floor(s/60)+'m '+String(s%60).padStart(2,'0')+'s'};
+function tick(){const n=Date.now();if(t0){tim[curLi]+=n-t0;t0=n}}
+function pause(){tick();t0=0}
+function resume(){t0=Date.now()}
+document.addEventListener('visibilitychange',()=>{if(document.hidden)pause();else if($('#m').style.display!='flex')resume()});
+setInterval(()=>{$('#tm').textContent=fmt(tim[ti]+(t0&&ti==curLi?Date.now()-t0:0))},1000);
+const passedN=()=>Math.min(unlocked,T.length),sum=a=>a.reduce((x,y)=>x+(y||0),0);
+function rank(){const m=sum(mm);return m==0?'Python Master':m<=25?'Code Ace':'Python Finisher'}
+function dash(){const n=T.length,d=passedN(),
+ rows=T.map((k,i)=>`<tr><td>${i+1}. ${esc(k.t)}</td><td>${TN[k.lv]}</td><td>${i<unlocked?'✓ Passed':i==unlocked?'▶ Current':'🔒 Locked'}</td><td>${att[i]}${pon[i]?` (passed on #${pon[i]})`:''}</td><td>${fmt(tim[i])}</td><td>${mm[i]}</td><td>${best[i]==null?'-':best[i]}</td></tr>`).join(''),
+ hard=T.map((k,i)=>[i,mm[i]]).sort((a,b)=>b[1]-a[1])[0],slow=T.map((k,i)=>[i,tim[i]]).sort((a,b)=>b[1]-a[1])[0],
+ tier=['LA','MA','HA'].map(t=>{const ix=T.map((k,i)=>k.lv==t?i:-1).filter(i=>i>=0);return `${TN[t]}: ${ix.filter(i=>i<unlocked).length} of ${ix.length}`}).join(' · ');
+ return `<div class="dash"><p><b>Progress: ${d} of ${n} levels passed</b> <span class="fact">(${tier})</span></p><div class="prog"><i style="width:${d/n*100}%"></i></div><div class="stats" style="justify-content:center">${[['Score',score],['Attempts',sum(att)],['Time',fmt(sum(tim))],['Mistakes',sum(mm)]].map(x=>`<div class="stat"><b>${x[1]}</b><span>${x[0]}</span></div>`).join('')}</div><div class="tw"><table class="st"><tr><th>Level</th><th>Tier</th><th>Status</th><th>Attempts</th><th>Time</th><th>Mistakes</th><th>Best</th></tr>${rows}</table></div><p class="fact">${hard[1]?`Most mistakes: Level ${hard[0]+1}, ${esc(T[hard[0]].t)}. `:''}${slow[1]?`Most time spent: Level ${slow[0]+1} (${fmt(slow[1])}).`:'Play a level to see your analysis here.'}</p></div>`}
+function summary(){tick();modal(`<h2>Progress and analysis report</h2><p>${pav} <b>${esc(pname)||'Player'}</b>${pyear?', '+esc(pyear):''}. Flowchart to Python, IGCSE Computer Science (Edexcel 4CP0). ${new Date().toLocaleDateString()}</p>${dash()}<p class="np"><button class="btn" onclick="copyReport(this)">Copy report</button> <button class="btn alt" onclick="try{print()}catch(_){}">Print or save as PDF</button> <button class="btn alt" onclick="closeM()">Close</button></p>`)}
+function copyReport(b){const t=['Flowchart to Python progress report',`${pname||'Player'}${pyear?', '+pyear:''}`,`Score: ${score}, ${passedN()} of ${T.length} levels passed, total time ${fmt(sum(tim))}`,'Level\tTier\tAttempts\tTime\tMistakes\tBest'].concat(T.map((k,i)=>`${i+1}. ${k.t}\t${TN[k.lv]}\t${att[i]}\t${fmt(tim[i])}\t${mm[i]}\t${best[i]==null?'-':best[i]}`)).join('\n');
  const ok=()=>{b.textContent='Copied!';setTimeout(()=>b.textContent='Copy report',1500)};
  try{navigator.clipboard.writeText(t).then(ok,()=>{b.textContent='Copy blocked'})}catch(_){b.textContent='Copy blocked'}}
+function cert(){confetti();modal(`<div class="cert"><h2>${pav} Certificate of Achievement</h2><p>This certifies that</p><p class="cn"><span id="cn">${esc(pname)||'your name here'}</span></p><p>${pyear?'('+esc(pyear)+') ':''}has completed all ${T.length} levels of Flowchart to Python for IGCSE Computer Science (Edexcel 4CP0), from Beginner to Expert.</p><p>Total score: <b>${score}</b> points. Rank: <b>${rank()}</b></p><p>${new Date().toLocaleDateString()}</p></div><p class="np"><input placeholder="Type your name" value="${esc(pname).replace(/"/g,'&quot;')}" oninput="pname=this.value;$('#cn').textContent=pname||'your name here';save();who()"></p><p class="np"><button class="btn" onclick="try{print()}catch(_){}">Print or save as PDF</button> <button class="btn alt" onclick="summary()">Progress report</button> <button class="btn alt" onclick="closeM()">Close</button></p>`)}
+// ---------- player, rules, save code ----------
+function who(){$('#who').textContent=pname?`${pav} ${pname}${pyear?', '+pyear:''}`:''}
+const AV=['🤖','🚀','🦊','🐉','🧠','⚡','🎮','🦄'],YR=['Year 9','Year 10','Year 11','Year 12','Year 13'],
+ FACTS=['Python is named after the comedy group Monty Python, not the snake.','A loop with no way out is an infinite loop, so every while loop needs a way to stop!','Python uses indentation to show which lines belong inside an if or a loop. Other languages use brackets.','The word “algorithm” comes from the name of the Persian mathematician al-Khwarizmi.'];
+function welcome(){const saved=att.some(a=>a>0);
+ modal(`<h2>Flowchart to Python</h2><p>Turn ${T.length} flowcharts into working Python programs, from Beginner to Expert, and earn your certificate.</p><p><button class="lnk" onclick="rules(true)">📖 Read the rules first</button></p><p>Pick your avatar:</p><div class="avs">${AV.map(a=>`<button class="av${a==pav?' on':''}" onclick="pav='${a}';welcome()">${a}</button>`).join('')}</div><p><input id="pn" placeholder="Your name" maxlength="40" value="${esc(pname).replace(/"/g,'&quot;')}" oninput="pname=this.value"><select id="py" onchange="pyear=this.value"><option value="">Year group</option>${YR.map(y=>`<option${y==pyear?' selected':''}>${y}</option>`).join('')}</select></p><p class="we" id="we"></p><p class="fact">Did you know? ${FACTS[Math.floor(Math.random()*FACTS.length)]}</p>${saved?dash():''}<button class="btn" onclick="begin()">${saved?'Continue':'Start'}</button> <button class="btn alt" onclick="rules(true)">Rules</button>${saved?' <button class="btn alt" onclick="newPlayer()">New player (clears progress)</button>':''}`)}
+function begin(){pname=pname.trim();if(!pname||!pyear){$('#we').textContent='Please enter your name and choose a year group.';return}save();closeM();who()}
+function isThis(){modal(`<h2>Welcome back!</h2><p style="font-size:2.4rem;margin:4px">${pav}</p><p>Is this still <b>${esc(pname)}</b>${pyear?' ('+esc(pyear)+')':''}?</p><button class="btn" onclick="welcome()">Yes, that’s me</button> <button class="btn alt" onclick="newPlayer()">No, I’m someone else</button><p class="fact">Choosing “No” clears the saved progress on this browser and starts a new player.</p>`)}
+function newPlayer(){pname='';pyear='';pav='🤖';ti=0;score=0;unlocked=0;att=T.map(()=>0);mm=T.map(()=>0);best=T.map(()=>null);tim=T.map(()=>0);pon=T.map(()=>0);save();build();welcome()}
+function rules(back){modal(`<h2>Rules and how to play</h2><p>Each level shows a flowchart. Turn it into a Python program by dropping the right code piece into every dashed gap.</p><ul><li><b>Beginner</b> levels: fill small gaps. <b>Intermediate</b>: complete missing whole lines. <b>Expert</b>: build the whole program, with indentation, and watch out for extra wrong lines.</li><li>Drag a code piece onto a gap, or tap the piece and then tap the gap. Hover over a gap to light up its flowchart shape.</li><li>Correct: +10 points plus streak bonuses. Wrong: −3 points and a hint. After two wrong tries on the same gap you get a clue.</li><li>Finish a level with <b>${MAXM} mistakes or fewer</b> to unlock the next one. No mistakes earns +20 and 3 stars.</li><li>You can try a level as many times as you like. The pieces are shuffled each time.</li><li>Your attempts, mistakes and time are recorded in your progress report. Progress is saved in this browser. Press Save progress to get a code for another device.</li><li>Finish all ${T.length} levels to earn your certificate.</li></ul><button class="btn" onclick="${back?'welcome()':'closeM()'}">${back?'Back':'Close'}</button>`)}
+function saveCode(){return btoa(unescape(encodeURIComponent(JSON.stringify(data()))))}
+function saveDlg(){tick();save();modal(`<h2>Save your progress</h2><p>Your progress is saved automatically in this browser. To carry on from another device, copy this code and keep it safe.</p><textarea id="sc2" readonly rows="4" style="width:100%">${saveCode()}</textarea><p><button class="btn" onclick="cp()">Copy code</button></p><h3 style="margin:10px 0 4px">Load a saved code</h3><textarea id="lc" rows="3" style="width:100%" placeholder="Paste your code here"></textarea><p class="we" id="le"></p><p><button class="btn alt" onclick="loadCode()">Load progress</button> <button class="btn alt" onclick="closeM()">Close</button></p>`)}
+function cp(){const t=$('#sc2'),e=$('#le');t.select();const ok=()=>{e.style.color='var(--ok)';e.textContent='Code copied.'};try{navigator.clipboard.writeText(t.value).then(ok,()=>{try{document.execCommand('copy');ok()}catch(_){}})}catch(_){try{document.execCommand('copy');ok()}catch(__){}}}
+function loadCode(){const e=$('#le');e.style.color='var(--bad)';try{const d=JSON.parse(decodeURIComponent(escape(atob($('#lc').value.trim()))));
+ att=T.map(()=>0);mm=T.map(()=>0);best=T.map(()=>null);tim=T.map(()=>0);pon=T.map(()=>0);if(!apply(d))throw 0;save();t0=0;ti=Math.min(unlocked,T.length-1);build();welcome()}catch(_){e.textContent='That code did not work. Check that you copied all of it.'}}
 function retry(){closeM();score=startScore;build()}
-function restart(){closeM();ti=0;score=0;unlocked=0;att=T.map(()=>0);mm=T.map(()=>0);best=T.map(()=>null);save();build()}
 function go(i){if(i>unlocked||i==ti)return;if(!locked)score=startScore;ti=i;build()}
-function modal(h){$('#m').innerHTML=`<div class="mc">${h}</div>`;$('#m').style.display='flex'}
-function closeM(){$('#m').style.display='none'}
+function modal(h){pause();$('#m').innerHTML=`<div class="mc">${h}</div>`;$('#m').style.display='flex'}
+function closeM(){$('#m').style.display='none';resume()}
 function confetti(){for(let i=0;i<40;i++){const s=document.createElement('i');s.className='cf';s.style.cssText=`left:${Math.random()*100}vw;background:hsl(${Math.random()*360},80%,60%);animation-delay:${Math.random()*.4}s`;document.body.appendChild(s);setTimeout(()=>s.remove(),2600)}}
 const slotAt=e=>{const s=document.elementFromPoint(e.clientX,e.clientY),g=s&&s.closest('[data-slot]');return g&&!g.classList.contains('done')?g:null};
 const clearOver=()=>document.querySelectorAll('.over').forEach(x=>x.classList.remove('over'));
@@ -201,5 +236,5 @@ $('#code').addEventListener('click',e=>{const s=e.target.closest('[data-slot]');
 $('#code').addEventListener('mouseover',e=>{const s=e.target.closest('[data-ref]');hl(s?s.dataset.ref:null)});
 $('#code').addEventListener('mouseleave',()=>hl());
 $('#rs').onclick=()=>{if(!locked)score=startScore;build()};
-load();ti=Math.min(unlocked,T.length-1);build();
+load();ti=Math.min(unlocked,T.length-1);build();if(pname)isThis();else welcome();
 </script></body></html>
